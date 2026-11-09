@@ -1,0 +1,82 @@
+services:
+  _defaults:
+    public: true
+
+  PrestaShop\Module\Redirect\Repository\RedirectRuleRepository:
+    arguments:
+      $connection: '@doctrine.dbal.default_connection'
+      $dbPrefix: '%database_prefix%'
+
+  prestashop.module.redirect.repository:
+    alias: PrestaShop\Module\Redirect\Repository\RedirectRuleRepository
+
+  PrestaShop\Module\Redirect\Service\CsvImportService:
+    autowire: true
+
+  prestashop.module.redirect.service.csv_import:
+    alias: PrestaShop\Module\Redirect\Service\CsvImportService
+
+  PrestaShop\Module\Redirect\Controller\Admin\RedirectController:
+    autowire: true
+    autoconfigure: true
+    tags: ['controller.service_arguments']
+
+  PrestaShop\Module\Redirect\Grid\Filters\RedirectFilters:
+    autoconfigure: true
+
+  # Grid
+  PrestaShop\Module\Redirect\Grid\Definition\Factory\RedirectGridDefinitionFactory:
+    parent: 'prestashop.core.grid.definition.factory.abstract_grid_definition'
+    public: true
+    tags: ['core.grid_definition_factory']
+
+  PrestaShop\Module\Redirect\Grid\Query\RedirectQueryBuilder:
+    parent: 'prestashop.core.grid.abstract_query_builder'
+    arguments:
+      - '@prestashop.core.query.doctrine_search_criteria_applicator'
+    public: true
+
+  prestashop.module.redirect.grid.data_provider:
+    class: '%prestashop.core.grid.data.factory.doctrine_grid_data_factory%'
+    arguments:
+      - '@PrestaShop\Module\Redirect\Grid\Query\RedirectQueryBuilder'
+      - '@prestashop.core.hook.dispatcher'
+      - '@prestashop.core.grid.query.doctrine_query_parser'
+      - 'redirect_rule'
+    public: true
+
+  prestashop.module.redirect.grid.factory:
+    class: 'PrestaShop\PrestaShop\Core\Grid\GridFactory'
+    arguments:
+      - '@PrestaShop\Module\Redirect\Grid\Definition\Factory\RedirectGridDefinitionFactory'
+      - '@prestashop.module.redirect.grid.data_provider'
+      - '@prestashop.core.grid.filter.form_factory'
+      - '@prestashop.core.hook.dispatcher'
+    public: true
+
+  prestashop.module.redirect.grid.position_definition:
+    class: 'PrestaShop\PrestaShop\Core\Grid\Position\PositionDefinition'
+    arguments:
+      $table: 'redirect_rule'
+      $idField: 'id_redirect_rule'
+      $positionField: 'position'
+
+  # Formulaire (create/edit)
+  PrestaShop\Module\Redirect\Form\RedirectFormDataProvider:
+    autowire: true
+
+  PrestaShop\Module\Redirect\Form\RedirectFormDataHandler:
+    autowire: true
+
+  prestashop.module.redirect.form.builder:
+    class: 'PrestaShop\PrestaShop\Core\Form\IdentifiableObject\Builder\FormBuilder'
+    factory: ['@prestashop.core.form.builder.form_builder_factory', 'create']
+    arguments:
+      - 'PrestaShop\Module\Redirect\Form\RedirectType'
+      - '@PrestaShop\Module\Redirect\Form\RedirectFormDataProvider'
+
+  prestashop.module.redirect.form.handler:
+    class: 'PrestaShop\PrestaShop\Core\Form\IdentifiableObject\Handler\FormHandler'
+    factory: ['@prestashop.core.form.identifiable_object.handler.form_handler_factory', 'create']
+    arguments:
+      - '@PrestaShop\Module\Redirect\Form\RedirectFormDataHandler'

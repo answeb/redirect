@@ -1,0 +1,30 @@
+{% extends '@PrestaShop/Admin/layout.html.twig' %}
+
+{% form_theme importForm '@PrestaShop/Admin/TwigTemplateForm/prestashop_ui_kit.html.twig' %}
+
+{% block content %}
+    {{ form_start(importForm) }}
+
+    <div class="card">
+        <h3 class="card-header">{{ layoutTitle }}</h3>
+
+        <div class="card-body">
+            <p>{{ 'Format attendu : une ligne par redirection, colonnes séparées par un point-virgule : source;destination;code.'|trans({}, 'Modules.Redirect.Admin') }}</p>
+            <p>{{ 'Les redirections importées sont créées en correspondance exacte (non regex) et activées.'|trans({}, 'Modules.Redirect.Admin') }}</p>
+            <div class="form-wrapper">
+                {{ form_widget(importForm) }}
+            </div>
+        </div>
+
+        <div class="card-footer">
+            <a href="{{ path('admin_redirect_index') }}" class="btn btn-outline-secondary">
+                {{ 'Cancel'|trans({}, 'Admin.Actions') }}
+            </a>
+            <button class="btn btn-primary float-right" id="save-button">
+                {{ 'Importer'|trans({}, 'Modules.Redirect.Admin') }}
+            </button>
+        </div>
+    </div>
+
+    {{ form_end(importForm) }}
+{% endblock %}

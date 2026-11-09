@@ -1,0 +1,71 @@
+admin_redirect_index:
+  path: /redirect
+  methods: [GET]
+  defaults:
+    _controller: 'PrestaShop\Module\Redirect\Controller\Admin\RedirectController::indexAction'
+    _legacy_controller: AdminRedirect
+    _legacy_link: AdminRedirect
+
+admin_redirect_search:
+  path: /redirect
+  methods: [POST]
+  defaults:
+    _controller: 'PrestaShopBundle\Controller\Admin\CommonController::searchGridAction'
+    _legacy_controller: AdminRedirect
+    gridDefinitionFactoryServiceId: 'PrestaShop\Module\Redirect\Grid\Definition\Factory\RedirectGridDefinitionFactory'
+    redirectRoute: admin_redirect_index
+
+admin_redirect_create:
+  path: /redirect/create
+  methods: [GET, POST]
+  defaults:
+    _controller: 'PrestaShop\Module\Redirect\Controller\Admin\RedirectController::createAction'
+    _legacy_controller: AdminRedirect
+
+admin_redirect_edit:
+  path: /redirect/{redirectRuleId}/edit
+  methods: [GET, POST]
+  requirements:
+    redirectRuleId: \d+
+  defaults:
+    _controller: 'PrestaShop\Module\Redirect\Controller\Admin\RedirectController::editAction'
+    _legacy_controller: AdminRedirect
+
+admin_redirect_delete:
+  path: /redirect/{redirectRuleId}/delete
+  methods: [POST]
+  requirements:
+    redirectRuleId: \d+
+  defaults:
+    _controller: 'PrestaShop\Module\Redirect\Controller\Admin\RedirectController::deleteAction'
+    _legacy_controller: AdminRedirect
+
+admin_redirect_bulk_delete:
+  path: /redirect/bulk-delete
+  methods: [POST]
+  defaults:
+    _controller: 'PrestaShop\Module\Redirect\Controller\Admin\RedirectController::bulkDeleteAction'
+    _legacy_controller: AdminRedirect
+
+admin_redirect_toggle_active:
+  path: /redirect/{redirectRuleId}/toggle-active
+  methods: [POST]
+  requirements:
+    redirectRuleId: \d+
+  defaults:
+    _controller: 'PrestaShop\Module\Redirect\Controller\Admin\RedirectController::toggleActiveAction'
+    _legacy_controller: AdminRedirect
+
+admin_redirect_update_position:
+  path: /redirect/update-position
+  methods: [POST]
+  defaults:
+    _controller: 'PrestaShop\Module\Redirect\Controller\Admin\RedirectController::updatePositionAction'
+    _legacy_controller: AdminRedirect
+
+admin_redirect_import:
+  path: /redirect/import
+  methods: [GET, POST]
+  defaults:
+    _controller: 'PrestaShop\Module\Redirect\Controller\Admin\RedirectController::importAction'
+    _legacy_controller: AdminRedirect
